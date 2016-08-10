@@ -10,15 +10,23 @@ var tools = require("./tools.js");
 //Requesting the data - Calling the API
 //**********************************************************
 
+var LocationArg = "";
+if (typeof (process.argv[2])!== 'undefined')
+	
+{
+LocationArg="?location="+process.argv[2];	
+}
+
+console.log (LocationArg);
 
 var dict;
 var htmlTable ='';
-var APIpath = "/eladorgbl1-eladspacebl1/catalog2/api/GetTweetsByLocation?location=";
-var options = {
+	var APIpath = "/eladorgbl1-eladspacebl1/catalog2/api/GetTweetsByLocation";
+	var options = {
   "method": "GET",
   "hostname": "api.eu.apiconnect.ibmcloud.com",
   "port": null,
-  "path": APIpath + process.argv[2]+"",
+  "path": APIpath + LocationArg +"",
   "headers": {
     "x-ibm-client-id": "468cb429-ec4f-4a42-9aa5-aaaf70f6baee",
     "x-ibm-client-secret": "xQ5lM2sC1sH2lU6hI7nB2mP6kH4wT5mI4bO8gQ6jI3vC0aU5bW",
@@ -26,6 +34,7 @@ var options = {
     "accept": "application/json"
   }
 };
+console.log(options);
 
 var req = https.request(options, function (res) {
   var chunks = [];
@@ -51,7 +60,7 @@ req.end();
 
 
 var htmlStarter = "<html><head><title>IBM Tweets Window</title></head><body>" +
-					"<h1>IBM Tweets App - Tweets by Location</h1>" +
+					"<h1>IBM Tweets App - Tweets by Location</h1>" + "<h3>Matching Criteria:" +process.argv[2]+"</h3>"
 					"";
 var htmlEnder = "</body></html>";
 var htmlLastUpdate = '<br>' +'LastUpdated: ' + tools.TheDate() + '<br>';
